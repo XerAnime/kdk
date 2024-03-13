@@ -1,0 +1,90 @@
+input,
+option,
+select {
+  color: white;
+  background-color: #141414;
+  outline: none;
+  border-radius: 10px;
+  font-size: 30px;
+  border: 0px;
+}
+
+
+@media screen and (max-width: 600px) {
+  input,
+  option,
+  select {
+    width: 100%;
+  }
+  input,
+  option,
+  select::after {
+    content: "<br>";
+  }
+  input,
+  option,
+  select::before {
+    content: "<br>";
+  }
+}
+
+
+a {
+  font-family: "Open Sans", sans-serif;
+  color: rgb(138, 136, 252);
+}
+h1 {
+  font-family: "Open Sans", sans-serif;
+  color: rgb(138, 136, 252);
+  font-size: 1fr;
+}
+a:link {
+  text-decoration: none;
+  color: rgb(138, 136, 252);
+}
+a:link:hover {
+  cursor: pointer;
+}
+a:visited {
+  color: rgb(138, 136, 252);
+}
+.abutton {
+  background-color: #363636;
+  border-radius: 10px;
+  font-size: 30px;
+  border: 0px;
+  color: rgb(138, 136, 252);
+}
+.title {
+  font-size: 30px;
+  float: left;
+  color: rgb(138, 136, 252);
+}
+.nav_bar {
+  background-color: #414141;
+  padding: 10px;
+}
+.logo {
+  height: 46px;
+  width: 46px;
+  float: left;
+}
+.abutton:hover {
+  cursor: pointer;
+  background-color: #191919;
+}
+.data {
+  text-align: center;
+  background-color: transparent;
+  border-radius: 10px;
+  height: fit-content;
+}
+.important {
+  color: yellow;
+}
+
+body {
+  background-color: #191919;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+}

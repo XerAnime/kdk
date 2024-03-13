@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watch</title>
+    <link rel="icon" href="/images/kartof-play.png" />
+    <meta content="Kartof Play" property="og:title" />
+    <% if(details.animeTitle != undefined) { %>
+
+    <meta content="Watch <%= details.animeTitle %>" property="og:description" />
+    <% }else { %>
+    <meta
+      content="Watch <%= mal_search[0].animeTitle %>"
+      property="og:description"
+    />
+
+    <% }%>
+
+    <meta content="play.kartof.tk" property="og:url" />
+    <% if(details.animeTitle != undefined) { %>
+    <meta content="<%= details.animeImg %>" property="og:image" />
+
+    <% }else { %>
+    <meta content="<%= mal_search[0].animeImg %>" property="og:image" />
+
+    <% } %>
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta content="#43B581" data-react-helmet="true" name="theme-color" />
+  </head>
+  <link href="/watch.css" rel="stylesheet" type="text/css" />
+  <link href="/common/cards.css" rel="stylesheet" type="text/css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <script type="text/javascript">
+    function load() {
+      if ("<%= stream.url %>" == undefined) {
+        document.getElementById("gogoanime").disabled = true;
+      }
+      if ("<%= animegg_stream.url %>" == undefined) {
+        document.getElementById("animeanimegg").disabled = true;
+      }
+      let scroll_height = document.getElementById("player").scrollHeight;
+      let scroll_width = document.getElementById("player").scrollWidth;
+
+      document.getElementById("player").width = scroll_width;
+      document.getElementById("player").height = scroll_height;
+      
+    }
+
+    function changeSource(source) {
+      if (source == "gogo") {
+        document.getElementById("player").src = "<%= stream.url %>";
+      } else if (source == "animegg") {
+        document.getElementById("player").src = "<%= animegg_stream.url %>";
+      }else {
+        document.getElementById("player").src = "<%= animerush_stream.url %>";
+      }
+      console.log(document.getElementById("player").src)
+      load();
+    }
+    function show_desc() {
+      let show_desc = document.getElementById("desc_data");
+      if (show_desc.text == "Show") {
+        
+        show_desc.innerHTML = '<%=details.synopsis.replace(/\n/g, "").replaceAll("\n", "") %>';
+      } else {
+        show_desc.innerHTML = "Show";
+      }
+    }
+    function show_othernames(){
+      
+      let show_othernames = document.getElementById("othernames_data");
+      if (show_othernames.text == "Show") {
+        let other_names = "<%=details.otherNames%>".split(",")
+        show_othernames.innerHTML = '' + other_names.join(", ");
+      } else {
+        show_othernames.innerHTML = "Show";
+      }
+    }
+    function show_genres(){
+      let show_genres = document.getElementById("genres_data");
+      if (show_genres.text == "Show") {
+        let genres = "<%=details.genres %>".split(",")
+        show_genres.innerHTML = "" + genres.join(", ");
+      } else {
+        show_genres.innerHTML = "Show";
+      }
+    }
+    function search() {
+      if (document.getElementById("keyword").value.trim().length > 0) {
+        window.location =
+          "/search/" +
+          document.getElementById("keyword").value +
+          "/" +
+          document.getElementById("select").value;
+      } else {
+        window.location = "/search/" + "Anime" + "/All";
+      }
+    }
+  </script>
+  <body onload="load()">
+    <div class="nav_bar">
+      <a href ="/">
+        <img class="logo"  src="/images/kartof-play.png">
+      </a>
+        
+        <a class="title" href ="/">Kartof Play</a>
+        <center>
+          <input id="keyword" type="search" onsearch="search()" />
+          <button class="abutton" onclick="search()">Search</button>
+          <select id="select">
+            <option>All</option>
+            <option>GoGoAnime</option>
+            <option>Animegg</option>
+            <option>MAL</option>
+            
+          </select>
+        </center>
+
+    </div>
+    <br />
+    <br />
+    
+    <% if(new_ep.next_ep != undefined) { %>
+
+    <center class="next_ep">
+      <time style="color: yellow" datetime="<%= new_ep.next_ep %>"
+        >Next Episode: <%= new_ep.date %></time
+      >
+    </center>
+
+    <% } %>
+<br>
+    <div class="details">
+      <% if(details.animeTitle != undefined) { %>
+      <a class="white_text"><%= details.animeTitle %></a>
+
+      <% }else { %>
+
+      <a class="white_text"><%= mal_search[0].animeTitle %></a>
+      <% }%>
+
+
+      <br />
+      <br />
+      <center>
+        <div class="description">
+          <div class="description_img">
+            <% if(details.animeImg != undefined) { %>
+
+            <img src="<%= details.animeImg %>" />
+            <% }else { %>
+            <img src="<%= mal_search[0].animeImg %>" />
+            <% } %>
+          </div>
+          <div class="description_text">
+           
+            <% if(details.synopsis != '') { %>
+              <a>Description: </a>
+              <a id="desc_data" onclick="show_desc()">Show</a>
+              <br>
+            <% } %>
+            
+            <a>Rating: </a>
+            <a style="color: yellow"><%= rating %>✨</a>
+            <br>
+            <% if(details.otherNames.length > 0) { %>
+              <a>Other Names: </a>
+              <a id="othernames_data" onclick="show_othernames()">Show</details></a>
+            <% } %>
+            <br>
+            <% if(details.genres.length > 0) { %>
+              <a>Genres: </a>
+              <a id="genres_data" onclick="show_genres()">Show</details></a>
+            <% } %>
+          </div>
+        </div>
+      </center>
+
+      <br />
+    </div>
+    <center>
+      <div class="episodes">
+        
+        <% if (details.episodesList != undefined) { %> <%
+        details.episodesList.forEach(function(element) { %>
+        <div onclick="location.href = `<%=element.watchUrl %>`" class="episode">
+          <% if(episode == element.episodeNum) {%>
+          <a style="color: rgb(85, 255, 85)" href="<%= element.watchUrl %>">
+            <%= element.episodeNum %></a
+          >
+          <%}else {%>
+          <a href="<%= element.watchUrl %>"> <%= element.episodeNum %></a>
+          <%}%>
+        </div>
+
+        <% })} %>
+      </div>
+    </center>
+
+    <br />
+    <div class="player">
+      <center>
+        <a class="episode abutton" id="gogoanime" onclick="changeSource('gogo')"
+          >GoGoAnime</a>
+        <a class="episode abutton" id="animegg" onclick="changeSource('animegg')"
+          >Animegg</a>
+        <a class="episode abutton" id="animerush" onclick="changeSource('animerush')"
+          >AnimeRush(old)</a>
+        <br />
+        <br />
+
+        <iframe
+          allowfullscreen=""
+          webkitallowfullscreen="true"
+          mozallowfullscreen="true"
+          oallowfullscreen="true"
+          msallowfullscreen="true"
+          src="<%= stream.url %>"
+          frameborder="0"
+          id="player"
+          scrolling="no"
+        ></iframe>
+      </center>
+    </div>
+    <div style="height: 40vh;">
+<a></a>
+    </div>
+  </body>
+</html>
